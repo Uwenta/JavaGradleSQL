@@ -11,6 +11,8 @@ public class LoginPage {
     private SelenideElement passwordField = $("[data-test-id=password] input");
     private SelenideElement loginButton = $("[data-test-id=action-login]");
 
+    private SelenideElement error = $("[data-test-id='error-notification']");
+
     public void enterData(DataHelper.AuthInfo info) {
         loginField.setValue(info.getLogin());
         passwordField.setValue(info.getPassword());
@@ -22,9 +24,9 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-    public LoginPage enterInvalidAuthInfo(DataHelper.AuthInfo info) {
+    public SelenideElement enterInvalidAuthInfo(DataHelper.AuthInfo info) {
         enterData(info);
-        return new LoginPage();
+        return error;
     }
 
 }

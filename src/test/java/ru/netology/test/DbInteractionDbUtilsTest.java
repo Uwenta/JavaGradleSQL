@@ -1,4 +1,4 @@
-package ru.netology;
+package ru.netology.test;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
@@ -31,26 +31,26 @@ public class DbInteractionDbUtilsTest {
         var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.enterValidAuthInfo(authInfo);
         var verificationCode = SQLHelper.getCode();
-        verificationPage.validVerify(verificationCode);
-        $("[data-test-id='dashboard']").shouldBe(Condition.visible, Duration.ofSeconds(5));
+        var listCardPage = verificationPage.validVerify(verificationCode);
+        listCardPage.getH2().shouldBe(Condition.visible, Duration.ofSeconds(5));
     }
 
     @Test //незарегистрированный пользователь
     void invalidAuthInfoWithNotRegisteredUser() {
         var loginPage = new LoginPage();
         var authInfo = DataHelper.getWrongAuthInfo();
-        loginPage.enterInvalidAuthInfo(authInfo);
-        $("[data-test-id='error-notification']").shouldBe(Condition.visible);
-        $("[data-test-id='error-notification']").shouldBe(Condition.text("Неверно указан логин или пароль"));
+        var error = loginPage.enterInvalidAuthInfo(authInfo);
+        error.shouldBe(Condition.visible);
+        error.shouldBe(Condition.text("Неверно указан логин или пароль"));
     }
 
     @Test //зарегистрированный пользователь и неверный пароль
     void invalidAuthInfoWithRegisteredUserAndWrongPassword() {
         var loginPage = new LoginPage();
         var authInfo = DataHelper.getAuthInfoWithWrongPassword();
-        loginPage.enterInvalidAuthInfo(authInfo);
-        $("[data-test-id='error-notification']").shouldBe(Condition.visible);
-        $("[data-test-id='error-notification']").shouldBe(Condition.text("Неверно указан логин или пароль"));
+        var error = loginPage.enterInvalidAuthInfo(authInfo);
+        error.shouldBe(Condition.visible);
+        error.shouldBe(Condition.text("Неверно указан логин или пароль"));
     }
 
     @Test //зарегистрированный пользователь и неверный код верификации
@@ -59,9 +59,9 @@ public class DbInteractionDbUtilsTest {
         var authInfo = DataHelper.getAuthInfo();
         var verificationPage = loginPage.enterValidAuthInfo(authInfo);
         var verificationCode = DataHelper.getWrongVerificationCode();
-        verificationPage.invalidVerify(verificationCode);
-        $("[data-test-id='error-notification']").shouldBe(Condition.visible);
-        $("[data-test-id='error-notification']").shouldBe(Condition.text("Неверно указан код"));
+        var error = verificationPage.invalidVerify(verificationCode);
+        error.shouldBe(Condition.visible);
+        error.shouldBe(Condition.text("Неверно указан код"));
 
     }
 

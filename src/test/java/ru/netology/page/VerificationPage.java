@@ -1,5 +1,6 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 
@@ -25,9 +26,13 @@ public class VerificationPage {
         return new ListCardsPage();
     }
 
-    public SelenideElement invalidVerify(DataHelper.VerificationCode verificationCode) {
+    public void invalidVerify(DataHelper.VerificationCode verificationCode) {
         enterCode(verificationCode);
-        return error;
+    }
+
+    public void searchErrorWithText(String text) {
+        error.shouldBe(Condition.visible);
+        error.shouldBe(Condition.text(text));
     }
 
 }

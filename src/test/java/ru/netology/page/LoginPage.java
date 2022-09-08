@@ -1,5 +1,6 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 
@@ -24,9 +25,13 @@ public class LoginPage {
         return new VerificationPage();
     }
 
-    public SelenideElement enterInvalidAuthInfo(DataHelper.AuthInfo info) {
+    public void enterInvalidAuthInfo(DataHelper.AuthInfo info) {
         enterData(info);
-        return error;
+    }
+
+    public void searchErrorWithText(String text) {
+        error.shouldBe(Condition.visible);
+        error.shouldBe(Condition.text(text));
     }
 
 }
